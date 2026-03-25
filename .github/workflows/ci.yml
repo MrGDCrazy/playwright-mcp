@@ -10,6 +10,9 @@ env:
   PWMCP_DEBUG: '1'
   PWDEBUGIMPL: '1'
 
+permissions:
+  contents: read
+
 jobs:
   lint:
     runs-on: ubuntu-latest
@@ -25,6 +28,25 @@ jobs:
     - run: npm run lint
     - name: Ensure no changes
       run: git diff --exit-code
+
+  # Orchestration engine: builds all packages in the monorepo and runs the
+  # validate smoke test for the orchestration engine package.
+  test-orchestration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+    - uses: actions/checkout@v4
+    - name: Use Node.js 20
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+    - name: Install dependencies
+      run: npm ci
+    - name: Build all packages
+      run: npm run build
+    - name: Validate orchestration engine
+      run: npm run validate --workspace=packages/mcp-orchestration-engine
 
   # Fast non-browser tests: cli.spec.ts and library.spec.ts exercise the CLI
   # binary and the Node.js library import without launching any browser.

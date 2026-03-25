@@ -26,7 +26,6 @@
     "lint": "tsc --noEmit",
     "test": "node dist/validate.js",
     "validate": "node dist/validate.js",
-    "start": "node dist/server.js",
     "dev": "tsc --watch"
   },
   "devDependencies": {

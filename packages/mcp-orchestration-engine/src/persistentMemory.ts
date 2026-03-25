@@ -1,6 +1,7 @@
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from "node:fs";
 import { join } from "node:path";
 import { saveExecution, getExecution, listRecentExecutions } from "./memory.js";
+import { logger } from "./logger.js";
 import type { ExecutionRecord } from "./types.js";
 
 const DATA_DIR = process.env["ORCHESTRATION_DATA_DIR"] ?? join(process.cwd(), ".orchestration-data");
@@ -13,12 +14,21 @@ function ensureDir(): void {
 }
 
 export function persistExecution(record: ExecutionRecord): void {
-  ensureDir();
-  // Update in-memory store first
+  // Always update in-memory store first so the record is queryable regardless
+  // of whether the disk write succeeds.
   saveExecution(record);
-  // Persist all in-memory executions to disk
-  const all = listRecentExecutions(1000);
-  writeFileSync(EXECUTIONS_FILE, JSON.stringify(all, null, 2), "utf-8");
+  // Best-effort disk persistence: a filesystem error must not cause the
+  // calling execution to appear failed.
+  try {
+    ensureDir();
+    const all = listRecentExecutions(1000);
+    writeFileSync(EXECUTIONS_FILE, JSON.stringify(all, null, 2), "utf-8");
+  } catch (err) {
+    logger.warn("persist_execution_failed", {
+      executionId: record.executionId,
+      message: err instanceof Error ? err.message : String(err),
+    });
+  }
 }
 
 export function loadExecutions(): void {
@@ -29,8 +39,13 @@ export function loadExecutions(): void {
     for (const r of records) {
       saveExecution(r);
     }
-  } catch {
-    // Ignore corrupted file on startup
+  } catch (err) {
+    // Log a warning so operators know the file was unreadable, but do not
+    // crash the server — the engine can continue with an empty in-memory store.
+    logger.warn("load_executions_failed", {
+      message: err instanceof Error ? err.message : String(err),
+      data: { file: EXECUTIONS_FILE },
+    });
   }
 }
 
