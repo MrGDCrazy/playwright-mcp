@@ -8,7 +8,7 @@ import { routeAndExecute } from "@playwright/mcp-orchestration-engine";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
-type ToolResult = { content: Array<{ type: string; text: string }> };
+type ToolResult = { content: Array<{ type: string; text: string }>; isError?: boolean };
 
 function ok(data: unknown): ToolResult {
   return { content: [{ type: "text", text: JSON.stringify(data, null, 2) }] };
@@ -18,7 +18,7 @@ function fail(message: string): ToolResult {
   return {
     content: [{ type: "text", text: JSON.stringify({ error: message }) }],
     isError: true,
-  } as ToolResult;
+  };
 }
 
 // ─── Server ──────────────────────────────────────────────────────────────────
