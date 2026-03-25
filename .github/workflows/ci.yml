@@ -30,7 +30,7 @@ jobs:
       run: git diff --exit-code
 
   # Orchestration engine: builds all packages in the monorepo and runs the
-  # validate smoke test for the orchestration engine and agent packages.
+  # validate smoke test for the orchestration engine package.
   test-orchestration:
     runs-on: ubuntu-latest
     timeout-minutes: 10
