@@ -9,7 +9,11 @@
     "outDir": "dist",
     "declaration": true,
     "resolveJsonModule": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "composite": true
   },
-  "include": ["src"]
+  "include": ["src"],
+  "references": [
+    { "path": "../mcp-orchestration-engine" }
+  ]
 }

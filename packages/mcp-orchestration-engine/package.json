@@ -1,0 +1,35 @@
+{
+  "name": "@playwright/mcp-orchestration-engine",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Orchestration engine runtime for multi-agent MCP system",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js",
+    "./types": "./dist/types.js",
+    "./memory": "./dist/memory.js",
+    "./persistentMemory": "./dist/persistentMemory.js",
+    "./logger": "./dist/logger.js",
+    "./observability": "./dist/observability.js",
+    "./registry": "./dist/registry.js",
+    "./router": "./dist/router.js",
+    "./planner": "./dist/planner.js",
+    "./graph": "./dist/graph.js",
+    "./multiAgentPlanner": "./dist/multiAgentPlanner.js",
+    "./executor": "./dist/executor.js",
+    "./server": "./dist/server.js",
+    "./graphServer": "./dist/graphServer.js"
+  },
+  "scripts": {
+    "build": "tsc --build",
+    "lint": "tsc --noEmit",
+    "test": "node dist/validate.js",
+    "validate": "node dist/validate.js",
+    "start": "node dist/server.js",
+    "dev": "tsc --watch"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  }
+}

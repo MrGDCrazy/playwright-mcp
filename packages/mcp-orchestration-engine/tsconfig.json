@@ -8,12 +8,10 @@
     "rootDir": "src",
     "outDir": "dist",
     "declaration": true,
+    "declarationMap": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "composite": true
   },
-  "include": ["src"],
-  "references": [
-    { "path": "../mcp-orchestration-engine" }
-  ]
+  "include": ["src"]
 }
