@@ -7,3 +7,5 @@ playwright-report/
 .DS_Store
 .env
 sessions/
+*.tsbuildinfo
+.orchestration-data/

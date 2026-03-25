@@ -6,14 +6,15 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc --build",
     "lint": "tsc --noEmit",
     "test": "echo OK",
     "start": "node dist/index.js",
     "dev": "tsc --watch"
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.25.2"
+    "@modelcontextprotocol/sdk": "^1.25.2",
+    "@playwright/mcp-orchestration-engine": "*"
   },
   "devDependencies": {
     "typescript": "^5.3.3"
