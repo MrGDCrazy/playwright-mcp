@@ -1,6 +1,11 @@
 /**
  * Smoke test / validation script for the orchestration engine.
  * Run after build with: node dist/validate.js
+ *
+ * Note: this script uses console.log intentionally — it is a standalone
+ * CLI validation tool, NOT an MCP server process. MCP servers must write
+ * only to stderr (StructuredLogger does this); smoke tests write to stdout
+ * for human-readable output.
  */
 import { routeAndExecute } from "./executor.js";
 import { executeTaskGraph } from "./executor.js";
