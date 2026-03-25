@@ -743,11 +743,12 @@ Or If you prefer to run the container as a long-lived service instead of letting
 
 ```
 docker run -d -i --rm --init --pull=always \
+  --cap-add SYS_ADMIN \
   --entrypoint node \
   --name playwright \
   -p 8931:8931 \
   mcr.microsoft.com/playwright/mcp \
-  cli.js --headless --browser chromium --no-sandbox --port 8931 --host 0.0.0.0
+  cli.js --headless --browser chromium --port 8931 --host 0.0.0.0
 ```
 
 The server will listen on host port **8931** and can be reached by any MCP client.  
@@ -757,6 +758,36 @@ You can build the Docker image yourself.
 ```
 docker build -t mcr.microsoft.com/playwright/mcp .
 ```
+
+### Docker Security Configuration
+
+The Docker image runs Chromium with its sandbox enabled. For the sandbox to function correctly inside a container, you need to provide appropriate security settings at runtime.
+
+**Option 1: Using `--cap-add SYS_ADMIN` (simplest)**
+
+```bash
+docker run --cap-add SYS_ADMIN playwright-mcp
+```
+
+**Option 2: Using a custom seccomp profile (recommended for production)**
+
+```bash
+docker run --security-opt seccomp=chrome.json playwright-mcp
+```
+
+You can use Playwright's recommended seccomp profile or Chromium's default seccomp profile for this purpose.
+
+**Docker Compose example:**
+
+```yaml
+services:
+  playwright-mcp:
+    image: playwright-mcp
+    cap_add:
+      - SYS_ADMIN
+```
+
+> **Note:** If you encounter sandbox-related errors without these settings, it means the container runtime does not support the required kernel features. In development environments only, you can pass `--no-sandbox` as an argument: `docker run playwright-mcp --no-sandbox`
 </details>
 
 <details>
