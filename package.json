@@ -14,7 +14,7 @@
   "scripts": {
     "docker-build": "docker build --no-cache -t playwright-mcp-dev:latest .",
     "docker-rm": "docker rm playwright-mcp-dev",
-    "docker-run": "docker run -it -p 8080:8080 --name playwright-mcp-dev playwright-mcp-dev:latest",
+    "docker-run": "docker run -it -p 8080:8080 --cap-add SYS_ADMIN --name playwright-mcp-dev playwright-mcp-dev:latest",
     "lint": "npm run lint --workspaces",
     "test": "npm run test --workspaces",
     "build": "npm run build --workspaces",
@@ -27,7 +27,7 @@
   "devDependencies": {
     "@modelcontextprotocol/sdk": "^1.25.2",
     "@playwright/test": "1.59.0-alpha-1773608981000",
-    "@types/node": "^24.3.0",
+    "@types/node": "^20.17.0",
     "ajv": "^8.18.0"
   }
 }
